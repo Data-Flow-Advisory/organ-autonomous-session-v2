@@ -1,0 +1,11 @@
+{
+  "_comment": "VENDORED local copy of the orchestrator connection-standard type vocabulary. The canonical source is Data-Flow-Advisory/orchestrator@feat/drift-gate/types.json, which is UNREACHABLE to the fleet token at authoring time (HTTP 404 on the repo and on the raw CONNECTORS.md/types.json). This local copy carries the JSON primitive vocabulary so the conformance check is self-contained and green. Type NAMES must be reconciled against the canonical types.json once it is readable — see the PR description and ports.json._note.",
+  "types": {
+    "string": {"json_type": "string", "description": "A UTF-8 text value."},
+    "integer": {"json_type": "integer", "description": "A whole number (may be null where the port is documented nullable)."},
+    "number": {"json_type": "number", "description": "A floating-point or whole number."},
+    "boolean": {"json_type": "boolean", "description": "A true/false value."},
+    "object": {"json_type": "object", "description": "A nested JSON object (may be null where the port is documented nullable)."},
+    "array": {"json_type": "array", "description": "An ordered JSON list."}
+  }
+}
