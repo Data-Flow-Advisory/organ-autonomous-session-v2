@@ -1,0 +1,9 @@
+{
+  "state": {
+    "completed_turn": 2,
+    "max_turns": 8,
+    "last_reply": "Still pulling the per-model breakdown, more to analyse.",
+    "budget": {"ok": false, "spent": 2.31, "budget": 2.0},
+    "directive": "Audit the API cost ledger and flag any persona burning above budget."
+  }
+}

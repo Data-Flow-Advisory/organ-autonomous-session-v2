@@ -1,0 +1,9 @@
+{
+  "state": {
+    "completed_turn": 4,
+    "max_turns": 8,
+    "last_reply": "Executive summary: three personas exceed their 4h cap; Jordan should re-tier them to Haiku. That's my full analysis.",
+    "budget": {"ok": true, "spent": 1.10, "budget": 2.0},
+    "directive": "Audit the API cost ledger and flag any persona burning above budget."
+  }
+}

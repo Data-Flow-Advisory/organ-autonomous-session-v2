@@ -1,0 +1,9 @@
+{
+  "state": {
+    "completed_turn": 1,
+    "max_turns": 8,
+    "last_reply": "I've mapped the cost columns, but I am blocked by missing read access to the prod ledger and need approval to query it directly.",
+    "budget": {"ok": true, "spent": 0.42, "budget": 2.0},
+    "directive": "Audit the API cost ledger and flag any persona burning above budget."
+  }
+}
