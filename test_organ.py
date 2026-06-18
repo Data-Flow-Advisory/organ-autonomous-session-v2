@@ -307,3 +307,50 @@ def test_all_samples_run_clean():
         r = decide(payload["state"], payload.get("context"))
         assert "action" in r["output"]
         assert 0.0 <= r["self_metric"]["confidence"] <= 1.0
+
+
+# --------------------------------------------------------------------------- #
+# Connection-standard ports (ports.json + types.json + check_ports.py)        #
+# --------------------------------------------------------------------------- #
+def _load(name):
+    return json.loads((HERE / name).read_text())
+
+
+def test_ports_and_types_parse():
+    ports = _load("ports.json")
+    types_doc = _load("types.json")
+    assert isinstance(ports["inputs"], list) and ports["inputs"]
+    assert isinstance(ports["outputs"], list) and ports["outputs"]
+    assert isinstance(types_doc["types"], dict) and types_doc["types"]
+
+
+def test_every_declared_type_in_vocabulary():
+    ports = _load("ports.json")
+    vocab = set(_load("types.json")["types"].keys())
+    for entry in ports["inputs"] + ports["outputs"]:
+        assert entry["type"] in vocab, f"{entry['name']} -> {entry['type']}"
+
+
+def test_decide_reads_every_declared_input():
+    ports = _load("ports.json")
+    src = (HERE / "organ.py").read_text()
+    for entry in ports["inputs"]:
+        name = entry["name"]
+        assert (f'state.get("{name}"' in src or f"state.get('{name}'" in src
+                or f'"{name}" in state' in src or f"'{name}' in state" in src), name
+
+
+def test_decide_writes_exactly_declared_outputs():
+    declared = {e["name"] for e in _load("ports.json")["outputs"]}
+    states = [{}]
+    for s in sorted((HERE / "samples").glob("*.json")):
+        states.append(json.loads(s.read_text()).get("state", {}))
+    for state in states:
+        out = decide(state, None)["output"]
+        assert set(out.keys()) == declared, set(out.keys()) ^ declared
+
+
+def test_check_ports_script_passes():
+    proc = subprocess.run([sys.executable, str(HERE / "check_ports.py")],
+                          capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
