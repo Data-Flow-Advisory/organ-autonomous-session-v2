@@ -1,0 +1,28 @@
+{
+  "_note": "Connection-standard ports for the autonomous-session organ. Types are drawn from the VENDORED types.json (JSON primitive vocabulary) because the canonical orchestrator types.json (Data-Flow-Advisory/orchestrator@feat/drift-gate) is unreachable at authoring time. Type names must be reconciled against the canonical vocabulary once readable. 'inputs' = the top-level keys decide() reads from state; 'outputs' = the top-level keys decide() writes under its 'output' object. context tuning knobs (completion_min_turn, fallback_prompt, budget_wrapup_prompt, work_prompts) are run metadata, not ports.",
+  "_checked": {
+    "corpus_checked": "2026-06-11",
+    "oss_checked": "2026-06-11",
+    "corpus_verdict": "not_duplicate",
+    "oss_verdict": "no_adopt",
+    "audited_by": "fleet-item-19907",
+    "corpus_rationale": "Distinct facet of discovery-engine app/services/autonomous_session.py — the turn-loop CONTROL decision (run_turn / stop_completion / stop_max_turns / stop_budget + blocker/completion classification + prompt-ladder selection). Complementary, NOT duplicate, to: (1) organ-autonomous-session = the session-type ROUTER facet (which session shape to run: generic/sdr/pa_digest/pa_bridge/pa_monitor/spec/team_spec) of the SAME source file; (2) organ-app-prompts-autonomous-session and -v2 = persona-prompt RENDERING extracted from a DIFFERENT source file (app/prompts/autonomous_session.py). No overlapping decision surface. grep of discovery-engine app/services found one source (autonomous_session.py) decomposed into these complementary facets.",
+    "oss_rationale": "No permissive OSS drop-in. The closest analogues — AlessandroAnnini/agent-loop, Google ADK LoopAgent, OpenCode agents — all bundle max-iteration/completion-phrase loop control INSIDE impure agent runtimes that call the model, run tools, and manage state, violating the pure stdin/stdout, no-side-effects, deterministic, stdlib-only organ contract. Adopting one would mean importing a runtime to replace ~17KB of dependency-free logic AND would discard the faithfully-extracted business constants (MAX_TURNS=8, early-completion gate turn>=3, the verbatim blocker/completion phrase lists, and the exact scripted 5-step prompt ladder + budget wrap-up message). Maintain in-house."
+  },
+  "inputs": [
+    {"name": "completed_turn", "type": "integer", "required": true},
+    {"name": "max_turns", "type": "integer", "required": false},
+    {"name": "last_reply", "type": "string", "required": false},
+    {"name": "budget", "type": "object", "required": false},
+    {"name": "directive", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "action", "type": "string"},
+    {"name": "should_continue", "type": "boolean"},
+    {"name": "next_turn", "type": "integer"},
+    {"name": "next_prompt", "type": "string"},
+    {"name": "progress_pct", "type": "integer"},
+    {"name": "reply_classification", "type": "object"},
+    {"name": "stop_reason", "type": "string"}
+  ]
+}
